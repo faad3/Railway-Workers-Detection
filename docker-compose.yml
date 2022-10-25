@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  darknet:
+    build: .
+    network_mode: host
+    ipc: "host"
+    restart: always
+    container_name: "darknet"
+    volumes:
+      - .:/app
+      - cache:/root/.cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities:
+                - gpu
+    environment:
+      - VERSION=latest
+      - NVIDIA_VISIBLE_DEVICES=0
+      - NVIDIA_DRIVER_CAPABILITIE=all
+    entrypoint: tail -f /bin/sh
+
+volumes:
+  cache:
+    external: true
